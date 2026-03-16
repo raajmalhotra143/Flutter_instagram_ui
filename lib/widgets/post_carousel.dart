@@ -29,19 +29,22 @@ class _PostCarouselState extends State<PostCarousel> {
             itemCount: widget.imageUrls.length,
             onPageChanged: (i) => setState(() => _currentIndex = i),
             itemBuilder: (context, index) {
-              return CachedNetworkImage(
-                imageUrl: widget.imageUrls[index],
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: Theme.of(context).brightness == Brightness.dark 
-                      ? Colors.grey.shade900 
-                      : Colors.grey.shade200,
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey.shade800,
-                  child: const Center(child: Icon(Icons.error)),
-                ),
-              );
+              final imageUrl = widget.imageUrls[index];
+              return imageUrl.startsWith('assets/')
+                  ? Image.asset(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      placeholder: (context, url) => Container(
+                        color: AppColors.backgroundLight,
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    );
             },
           ),
         ),

@@ -93,13 +93,16 @@ class _StoryItem extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.all(AppSpacing.storyRingGap), // Gap thickness
                   child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl: story.user.profileImageUrl,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, err) => Container(color: Colors.grey.shade800),
-                    ),
-                  ),
-                ),
+                    child: story.user.profileImageUrl.startsWith('assets/')
+                    ? Image.asset(
+                        story.user.profileImageUrl,
+                        fit: BoxFit.cover,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: story.user.profileImageUrl,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => const Icon(Icons.person),
+                      ),
               ),
               
               if (isMe)

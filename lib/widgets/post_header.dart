@@ -32,12 +32,12 @@ class PostHeader extends StatelessWidget {
                 width: 0.5,
               ),
             ),
-            child: ClipOval(
-              child: CachedNetworkImage(
-                imageUrl: user.profileImageUrl,
-                fit: BoxFit.cover,
-                errorWidget: (_, _, _) => const Icon(Icons.person),
-              ),
+            child: CircleAvatar(
+              radius: AppSpacing.postAvatarSize / 2, // Use half of the container's size for radius
+              backgroundImage: user.profileImageUrl.startsWith('assets/')
+                  ? AssetImage(user.profileImageUrl) as ImageProvider
+                  : CachedNetworkImageProvider(user.profileImageUrl),
+              onBackgroundImageError: (exception, stackTrace) => const Icon(Icons.person), // Handle error for CircleAvatar
             ),
           ),
           
